@@ -59,27 +59,21 @@ df_iso["Element"] = pd.Series(eleNames)
 numElements = df_iso.groupby('Element',sort=False).size()
 #print(numElements)
 
-elIndex = []
-for elCount in numElements:
-	elIndex = elIndex + list(range(elCount))
-
-df_iso["IsoIndex"] = pd.Series(elIndex)
-
 #g = sns.factorplot(data=df_iso,col='Element',hue='Element',x='Isotope',y='ORNL C/E',size=4,col_wrap=4)
 #g = sns.FacetGrid(data=df_iso,col='Element',hue='Element',size=4,col_wrap=4)
 #g.map(plt.scatter,'IsoIndex',"ORNL C/E")
 
 # General column labels for all plots (i.e., series to plot)
-labels = ["ORNL C/E","Nominal C/E","E7.1 Nominal C/E","modEu C/E","E7.1 modEu+Sm C/E"]
+labels = ["ORNL C/E","Nominal C/E","E7.1 Nominal C/E","modEu C/E","modEu+Sm C/E", "E7.1 modEu+Sm C/E"]
 # Default series meta-info
 defaultSeriesInfo = [ { 'markersize':6,'marker':'s','color':'k','markeredgecolor':'k','label':'ORNL (2016)' },
                      { 'markersize':8,'marker':'o','label':'ENDF VII.0 (nominal)' },
                      { 'markersize':8,'marker':'o','label':'ENDF/VII.1 (nominal)' },
                      #                     { 'markersize':8,'marker':'o','markerfacecolor':'w','markeredgewidth':1,'color':'k','label':'ENDF/VII.1' },
-                     { 'markersize':8,'marker':'^','label':'ENDF/VII.0 + mod. Eu-154' },
-                     { 'markersize':8,'marker':'^','label':'ENDF/VII.1 + mod. Eu-154 & Sm-154' },
+                     { 'markersize':8,'marker':'^','label':'VII.0 + mod. Eu-154' },
+                     { 'markersize':8,'marker':'v','label':'VII.0 + mod. Eu-154 & Sm-154' },
+                     { 'markersize':8,'marker':'^','label':'VII.1 + mod. Eu-154 & Sm-154' },
                      #                     { 'markersize':8,'marker':'^','markerfacecolor':'w','color':'k','markeredgewidth':1,'label':'ENDF/VII.1 + mod. Eu-154 & Sm-154' },
-                     { 'markersize':8,'marker':'v','label':'Mod. Eu-154 & Sm-154' }
                      ]
 
 # Uranium series
