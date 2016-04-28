@@ -17,7 +17,7 @@ SHOW_PLOTS = False
 def plotDeltaKeff(df, labels, seriesInfo, pltTitle, filename, legendLoc="best"):
    
     for idx in range(0,len(labels)):
-       plt.plot(df["Burnup (MWd/MTU)"], df[labels[idx]].values,**seriesInfo[idx])
+       plt.plot(df["Burnup (MWd/MTU)"], df[labels[idx]].values-df["Nominal"].values,**seriesInfo[idx])
     
     #plt.xticks(df_iso.index,df_iso["Isotope"])
     #plt.xlim(min(df_iso.index)-1,max(df_iso.index)+1)
@@ -35,7 +35,6 @@ def plotDeltaKeff(df, labels, seriesInfo, pltTitle, filename, legendLoc="best"):
         plt.savefig(IMAGE_DEST + filename + '.' + OUTPUT_FORMAT)
         plt.close()
 
-# NEED TO ADD A POWER COLUMN => BURNUP COLUMN => PLOT BY BURNUP
 df_keff = pd.read_csv('TMI-1_k-eff.csv')
 
 df_kDelta = df_keff
@@ -44,14 +43,18 @@ df_kDelta["ModEu+Sm"] = (df_keff["ModEu+Sm"]-df_keff["Nominal"])*1E5
 df_kDelta["E7.1 ModEu"] = (df_keff["E7.1 ModEu"]-df_keff["E7.1 Nominal"])*1E5
 df_kDelta["E7.1 ModEu+Sm"] = (df_keff["E7.1 ModEu+Sm"]-df_keff["E7.1 Nominal"])*1E5
 
-#print(df_keff["E7.1 Nominal"])
 # General column labels for all plots (i.e., series to plot)
-labels = ["ModEu", "E7.1 ModEu", "ModEu+Sm", "E7.1 ModEu+Sm"]
+labelsE70 = ["ModEu", "ModEu+Sm"]
+labelsE71 = ["E7.1 ModEu", "E7.1 ModEu+Sm"]
 
 # Default series meta-info
-defaultSeriesInfo = [ { 'markersize':8,'marker':'^','label':'ENDF/VII.0 + mod. Eu-154' },
-                      { 'markersize':8,'marker':'^','label':'ENDF/VII.1 + mod. Eu-154' },
-                     { 'markersize':8,'marker':'v','label':'ENDF/VII.0 + mod. Eu-154 & Sm-154' },
-                     { 'markersize':8,'marker':'v','label':'ENDF/VII.1 + mod. Eu-154 & Sm-154' },
+defaultSeriesInfoE70 = [ { 'markersize':8,'marker':'^','label':'ENDF/VII.0 + mod. Eu-154' },
+                         { 'markersize':8,'marker':'v','label':'ENDF/VII.0 + mod. Eu-154 & Sm-154' }
                      ]
-plotDeltaKeff(df_kDelta, labels, defaultSeriesInfo, "TMI-NJ05YU Sample C2D1: Effective reactivity change", "C2D1_deltaK")
+defaultSeriesInfoE71 = [ { 'markersize':8,'marker':'^','label':'ENDF/VII.1 + mod. Eu-154' },
+                         { 'markersize':8,'marker':'v','label':'ENDF/VII.1 + mod. Eu-154 & Sm-154' }
+                       ]
+
+plotDeltaKeff(df_kDelta, labelsE70, defaultSeriesInfoE70, "TMI-NJ05YU Sample C2D1: Reactivity change (from ENDF/VII.0)", "C2D1_E70_deltaK")
+plotDeltaKeff(df_kDelta, labelsE71, defaultSeriesInfoE71, "TMI-NJ05YU Sample C2D1: Reactivity change (from ENDF/VII.0)", "C2D1_E71_deltaK")
+
